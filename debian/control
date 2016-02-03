@@ -1,7 +1,8 @@
 Source: clamav
 Section: utils
 Priority: optional
-Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: ClamAV Team <pkg-clamav-devel@lists.alioth.debian.org>
 Uploaders: Stephen Gran <sgran@debian.org>,
            Michael Meskes <meskes@debian.org>,
            Michael Tautschnig <mt@debian.org>,
@@ -15,6 +16,7 @@ Build-Depends: automake,
                dh-autoreconf,
                dh-systemd,
                electric-fence,
+               faketime,
                libbz2-dev,
                libcurl4-openssl-dev,
                libjson-c-dev | libjson0-dev,
@@ -23,10 +25,10 @@ Build-Depends: automake,
                libmspack-dev,
                libncurses5-dev,
                libssl-dev,
-               libsystemd-dev [linux-any],
+               libsystemd-daemon-dev [linux-any],
                libtommath-dev,
                libxml2-dev,
-               llvm-dev [i386 amd64 powerpc kfreebsd-amd64 kfreebsd-i386],
+               llvm-3.5-dev,
                perl,
                pkg-config,
                po-debconf,
@@ -36,6 +38,7 @@ Standards-Version: 3.9.6
 Vcs-Git: git://anonscm.debian.org/pkg-clamav/clamav.git
 Vcs-Browser: https://anonscm.debian.org/cgit/pkg-clamav/clamav.git
 Homepage: http://www.clamav.net/
+XS-Testsuite: autopkgtest
 
 Package: clamav-base
 Architecture: all

@@ -1,4 +1,4 @@
-From 5be9429e6eef6f18ff80174404d9e82779e8cffc Mon Sep 17 00:00:00 2001
+From 0d5d054154ea1fd26752e3f21ea62a9dd56ab57c Mon Sep 17 00:00:00 2001
 From: Scott Kitterman <scott@kitterman.com>
 Date: Mon, 10 Mar 2014 19:20:18 -0400
 Subject: Change paths in sample conf file to match Debian

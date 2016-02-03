@@ -1,4 +1,4 @@
-From e1b140c74717553215a18f3ddbf00025a3b00aa3 Mon Sep 17 00:00:00 2001
+From 6e0b8b8d9a9bf6c0d7f851b91c84d60065e346ee Mon Sep 17 00:00:00 2001
 From: Shawn Webb <swebb@sourcefire.com>
 Date: Thu, 31 Jul 2014 11:50:23 -0400
 Subject: bb#10731 - Allow to specificy a group for the socket of which the

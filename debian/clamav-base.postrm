@@ -26,9 +26,6 @@ case "$1" in
   UCFLIST="/etc/cron.d/clamav-daemon \
     /etc/clamav.conf \
     /etc/clamav/clamav.conf \
-    /etc/clamav/clamd.conf \
-    /etc/clamav/freshclam.conf \
-    /etc/clamav/clamav-milter.conf \
     /var/lib/clamav/clamav.conf.*.md5"
   for i in $UCFLIST; do
     if [ -x "/usr/bin/ucf" ]; then
@@ -38,7 +35,7 @@ case "$1" in
       rm -f $i || true
     fi
   done
-  rm -f /var/log/clamav/*.log* /etc/clamav/*.conf.dpkg-old
+  rm -f /var/log/clamav/clamav.log* /etc/clamav/clamav.conf.dpkg-old
   rm -f /var/lib/clamav/*.md5sum || true
   rm -f $DATABASEDIR/main.cvd $DATABASEDIR/daily.cvd $DATABASEDIR/bytecode.cvd
   ;;

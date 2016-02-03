@@ -30,7 +30,7 @@ set -e
 
 FRESHCLAMCONFFILE=/etc/clamav/freshclam.conf
 FRESHCLAMLOGFILE=/var/log/clamav/freshclam.log
-DEBCONFFILE=/var/lib/clamav/freshclam.conf
+DEBCONFILE=/var/lib/clamav/freshclam.conf
 LOGROTFILE=/etc/logrotate.d/clamav-freshclam
 DEBROTFILE=/var/lib/clamav/clamav-freshclam
 
@@ -216,7 +216,7 @@ case "$1" in
   [ -z "$TestDatabases" ] && TestDatabases=yes
 
   # Generate config file
-  cat >> $DEBCONFFILE << EOF
+  cat >> $DEBCONFILE << EOF
 # Automatically created by the clamav-freshclam postinst
 # Comments will get lost when you reconfigure the clamav-freshclam package
 
@@ -244,38 +244,38 @@ Bytecode $Bytecode
 EOF
 
   if [ -n "$notify" ] ;then
-    echo "NotifyClamd $notify" >> $DEBCONFFILE
+    echo "NotifyClamd $notify" >> $DEBCONFILE
   fi
 
   if [ "$runas" != "cron" ] || [ "$runas" != "manual" ]; then
     if [ -n "$checks" ] && [ "$checks" != "true" ]; then
-      echo "# Check for new database $checks times a day" >> $DEBCONFFILE
-      echo "Checks $checks" >> $DEBCONFFILE
+      echo "# Check for new database $checks times a day" >> $DEBCONFILE
+      echo "Checks $checks" >> $DEBCONFILE
     fi
   fi
   if [ -n "$mirrors" ]; then
     for i in $mirrors; do
-      echo "DatabaseMirror $i" >> $DEBCONFFILE
+      echo "DatabaseMirror $i" >> $DEBCONFILE
     done
   fi
   # the first mirror is managed via debconf (and might have been changed)
   DatabaseMirror="`echo $DatabaseMirror | sed 's/^[[:space:]]*[^[:space:]]\+[[:space:]]\*//'`"
   DatabaseMirror="$DatabaseMirror database.clamav.net"
   for m in $DatabaseMirror; do
-    grep -q "$m" "$DEBCONFFILE" || echo "DatabaseMirror $m" >> $DEBCONFFILE
+    grep -q "$m" "$DEBCONFILE" || echo "DatabaseMirror $m" >> $DEBCONFILE
   done
 
   if [ -n "$phost" ]; then
-    echo "# Proxy: $fullurl" >> $DEBCONFFILE
-    echo "HTTPProxyServer $phost" >> $DEBCONFFILE
+    echo "# Proxy: $fullurl" >> $DEBCONFILE
+    echo "HTTPProxyServer $phost" >> $DEBCONFILE
     if [ -n "$pport" ]; then
-      echo "HTTPProxyPort $pport" >> $DEBCONFFILE
+      echo "HTTPProxyPort $pport" >> $DEBCONFILE
     fi
   fi
   if [ -n "$puser" ] && [ -n "$ppass" ]; then
-    echo "# Proxy authentication: $fulluser" >> $DEBCONFFILE
-    echo "HTTPProxyUsername $puser" >> $DEBCONFFILE
-    echo "HTTPProxyPassword $ppass" >> $DEBCONFFILE
+    echo "# Proxy authentication: $fulluser" >> $DEBCONFILE
+    echo "HTTPProxyUsername $puser" >> $DEBCONFILE
+    echo "HTTPProxyPassword $ppass" >> $DEBCONFILE
   fi
 
   if `dpkg --compare-versions "$2" lt 0.98.5+dfsg-4~`; then
@@ -284,30 +284,30 @@ EOF
       PidFile=''
     fi
   fi
-  [ -n "$PidFile" ] && echo "PidFile $PidFile" >> $DEBCONFFILE
-  [ -n "$HTTPUserAgent" ] && echo "HTTPUserAgent $HTTPUserAgent" >> $DEBCONFFILE
-  [ -n "$OnOutdatedExecute" ] && echo "OnOutdatedExecute $OnOutdatedExecute" >> $DEBCONFFILE
-  [ -n "$OnUpdateExecute" ] && echo "OnUpdateExecute $OnUpdateExecute" >> $DEBCONFFILE
-  [ -n "$OnErrorExecute" ] && echo "OnErrorExecute $OnErrorExecute" >> $DEBCONFFILE
-  [ -n "$LocalIPAddress" ] && echo "LocalIPAddress $LocalIPAddress" >> $DEBCONFFILE
-  [ -n "$SubmitDetectionStats" ] && echo "SubmitDetectionStats $SubmitDetectionStats" >> $DEBCONFFILE
-  [ -n "$DetectionStatsCountry" ] && echo "DetectionStatsCountry $DetectionStatsCountry" >> $DEBCONFFILE
-  [ -n "$DetectionStatsHostID" ] && echo "DetectionStatsHostID $DetectionStatsHostID" >> $DEBCONFFILE
-  [ -n "$PrivateMirror" ] && echo "PrivateMirror $PrivateMirror" >> $DEBCONFFILE
+  [ -n "$PidFile" ] && echo "PidFile $PidFile" >> $DEBCONFILE
+  [ -n "$HTTPUserAgent" ] && echo "HTTPUserAgent $HTTPUserAgent" >> $DEBCONFILE
+  [ -n "$OnOutdatedExecute" ] && echo "OnOutdatedExecute $OnOutdatedExecute" >> $DEBCONFILE
+  [ -n "$OnUpdateExecute" ] && echo "OnUpdateExecute $OnUpdateExecute" >> $DEBCONFILE
+  [ -n "$OnErrorExecute" ] && echo "OnErrorExecute $OnErrorExecute" >> $DEBCONFILE
+  [ -n "$LocalIPAddress" ] && echo "LocalIPAddress $LocalIPAddress" >> $DEBCONFILE
+  [ -n "$SubmitDetectionStats" ] && echo "SubmitDetectionStats $SubmitDetectionStats" >> $DEBCONFILE
+  [ -n "$DetectionStatsCountry" ] && echo "DetectionStatsCountry $DetectionStatsCountry" >> $DEBCONFILE
+  [ -n "$DetectionStatsHostID" ] && echo "DetectionStatsHostID $DetectionStatsHostID" >> $DEBCONFILE
+  [ -n "$PrivateMirror" ] && echo "PrivateMirror $PrivateMirror" >> $DEBCONFILE
   if [ -n "$DatabaseCustomURL" ]; then
     for i in $DatabaseCustomURL; do
-      echo "DatabaseCustomURL $i" >> $DEBCONFFILE
+      echo "DatabaseCustomURL $i" >> $DEBCONFILE
     done
   fi
   if [ -n "$ExtraDatabase" ]; then
     for i in $ExtraDatabase; do
-      echo "ExtraDatabase $i" >> $DEBCONFFILE
+      echo "ExtraDatabase $i" >> $DEBCONFILE
     done
   fi
   
   ucf_cleanup "$FRESHCLAMCONFFILE"
-  ucf_upgrade_check "$FRESHCLAMCONFFILE" "$DEBCONFFILE" /var/lib/ucf/cache/:etc:clamav:freshclam.conf
-  rm -f "$DEBCONFFILE"
+  ucf_upgrade_check "$FRESHCLAMCONFFILE" "$DEBCONFILE" /var/lib/ucf/cache/:etc:clamav:freshclam.conf
+  rm -f "$DEBCONFILE"
 
   db_stop || true
   
@@ -341,7 +341,7 @@ EOF
     if [ -x "/etc/init.d/clamav-freshclam" ]; then
       update-rc.d clamav-freshclam defaults >/dev/null
     fi
-    if pathfind invoke-rc.d; then
+    if [ -x /usr/sbin/invoke-rc.d ]; then
       invoke-rc.d clamav-freshclam start
     else
       /etc/init.d/clamav-freshclam start
@@ -349,7 +349,7 @@ EOF
   elif [ "$runas" = 'ifup.d' ]; then
     for intrface in $iface; do
       if route | grep -q "$intrface"; then
-        if pathfind invoke-rc.d; then
+        if [ -x /usr/sbin/invoke-rc.d ]; then
           IFACE="$intrface" invoke-rc.d clamav-freshclam start || true
         else
           IFACE="$intrface" /etc/init.d/clamav-freshclam start || true
@@ -360,7 +360,7 @@ EOF
     update-rc.d -f clamav-freshclam remove > /dev/null 2>&1
   else
     echo "Starting database update: "
-    if pathfind invoke-rc.d; then
+    if [ -x /usr/sbin/invoke-rc.d ]; then
       invoke-rc.d clamav-freshclam no-daemon || true
     else
       /etc/init.d/clamav-freshclam no-daemon || true

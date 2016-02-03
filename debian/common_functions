@@ -134,15 +134,15 @@ slurp_config()
 }
 
 pathfind() {
-  OLDIFS="$IFS"
+  OLDIFS=”$IFS”
   IFS=:
   for p in $PATH; do
-    if [ -x "$p/$*" ]; then
-      IFS="$OLDIFS"
+    if [ -x ”$p/$*” ]; then
+      IFS=”$OLDIFS”
       return 0
     fi
   done
-  IFS="$OLDIFS"
+  IFS=”$OLDIFS”
   return 1
 }
 

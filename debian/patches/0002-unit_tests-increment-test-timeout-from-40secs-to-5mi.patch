@@ -1,4 +1,4 @@
-From ddd4ecdc3c0485f5103e84a54bdaa406e3e645ad Mon Sep 17 00:00:00 2001
+From 3a3638b8f5f51af0a2fe953a845beadbbdb91345 Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 Date: Fri, 25 Apr 2014 22:06:23 +0200
 Subject: unit_tests: increment test-timeout from 40secs to 5mins

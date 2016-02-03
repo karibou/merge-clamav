@@ -1,4 +1,4 @@
-From 1143ff583fae35a5c9fc54f25381dff76645e594 Mon Sep 17 00:00:00 2001
+From a603b07a6ab3abe05cb0df852971dbe30be56601 Mon Sep 17 00:00:00 2001
 From: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
 Date: Mon, 4 Aug 2014 22:44:40 +0200
 Subject: remove unnecessary/harmful flags from libclamav.pc

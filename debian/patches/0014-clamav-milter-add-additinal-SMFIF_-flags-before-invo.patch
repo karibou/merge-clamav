@@ -1,4 +1,4 @@
-From fdc5d5e59af9fe33173753115c80423839d64b22 Mon Sep 17 00:00:00 2001
+From f507c5b1d0bd0f77dcdc8102b62a4431325f4efe Mon Sep 17 00:00:00 2001
 From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
 Date: Sun, 26 Oct 2014 12:11:09 +0100
 Subject: clamav-milter: add additinal SMFIF_* flags before invoking

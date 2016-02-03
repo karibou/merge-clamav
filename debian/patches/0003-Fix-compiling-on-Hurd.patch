@@ -1,4 +1,4 @@
-From 1bd7abfa288e6a3143be8e68e2f85e0ffe42390f Mon Sep 17 00:00:00 2001
+From 78043c43aa0724976c0e9cfe95f4d69c03d83096 Mon Sep 17 00:00:00 2001
 From: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
 Date: Sat, 21 Jun 2014 17:00:47 +0200
 Subject: Fix compiling on Hurd.

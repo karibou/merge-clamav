@@ -6,8 +6,10 @@
 0006-Add-upstream-systemd-support-for-clamav-daemon-and-c.patch
 0007-fix-ssize_t-size_t-off_t-printf-modifier.patch
 0008-hardcode-LLVM-linker-flag-because-llvm-config-return.patch
-0009-bb-10731-Allow-to-specificy-a-group-for-the-socket-o.patch
-0010-clamav-milter-add-additinal-SMFIF_-flags-before-invo.patch
-0011-Avoid-emitting-incremental-progress-messages-when-no.patch
-0012-add-support-for-system-tomsfastmath.patch
-0013-tfm-drop-__DATE__.patch
+0009-Add-libmspack-library-from-upstream-without-unnecess.patch
+0010-allow-to-use-internal-libmspack-if-the-external-is-n.patch
+0011-fix-autoreconf-with-embedded-libmspack.patch
+0013-bb-10731-Allow-to-specificy-a-group-for-the-socket-o.patch
+0014-clamav-milter-add-additinal-SMFIF_-flags-before-invo.patch
+0015-llvm-don-t-use-system-libs.patch
+0016-Avoid-emitting-incremental-progress-messages-when-no.patch

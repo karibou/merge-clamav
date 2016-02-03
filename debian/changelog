@@ -1,81 +1,53 @@
-clamav (0.98.7+dfsg-1) unstable; urgency=high
+clamav (0.98.7+dfsg-0ubuntu1) wily; urgency=medium
 
-  [ Andreas Cadhalpun ]
-  * Use SocketUser, SocketGroup and RemoveOnStop systemd socket options
-    instead of using ExecStartPost and ExecStopPost for that.
-  * Respect clamav-daemon's LocalSocket* options with the systemd unit by
-    extending the clamav-daemon.socket file appropriately, when running
-    dpkg-reconfigure clamav-daemon. (Closes: #783720)
-  * Disable this extendend configuration, when handling the configuration
-    file with debconf is disabled.
-  * Disable clamav-daemon.socket in prerm script.
+  * Updated to 0.98.7 to fix multiple issues
+    - CVE-2015-2170
+    - CVE-2015-2221
+    - CVE-2015-2222
+    - CVE-2015-2305
+    - CVE-2015-2668
+  * Refreshed patches for 0.98.7:
+    - d/p/0005-libclamav-use-libmspack.patch
+    - d/p/0007-fix-ssize_t-size_t-off_t-printf-modifier.patch
+    - d/p/0008-hardcode-LLVM-linker-flag-because-llvm-config-return.patch
+    - d/p/0015-llvm-don-t-use-system-libs.patch
+  * Removed upstreamed patches:
+    - d/p/0012-remove-AC_CONFIG_SRCDIR-llvm-configure-from-libclama.patch
 
-  [ Sebastian Andrzej Siewior ]
-  * Import new upstream:
-    - Improvements to PDF processing: decryption, escape sequence
-      handling, and file property collection.
-    - Scanning/analysis of additional Microsoft Office 2003 XML format.
-    - Fix infinite loop condition on crafted y0da cryptor file. Identified
-      and patch suggested by Sebastian Andrzej Siewior. CVE-2015-2221.
-    - Fix crash on crafted petite packed file. Reported and patch
-      supplied by Sebastian Andrzej Siewior. CVE-2015-2222.
-    - Fix false negatives on files within iso9660 containers. This issue
-      was reported by Minzhuan Gong.
-    - Fix a couple crashes on crafted upack packed file. Identified and
-      patches supplied by Sebastian Andrzej Siewior.
-    - Fix a crash during algorithmic detection on crafted PE file.
-      Identified and patch supplied by Sebastian Andrzej Siewior.
-    - Fix an infinite loop condition on a crafted "xz" archive file.
-      This was reported by Dimitri Kirchner and Goulven Guiheux.
-      CVE-2015-2668.
-    - Fix compilation error after ./configure --disable-pthreads.
-      Reported and fix suggested by John E. Krokes.
-    - Apply upstream patch for possible heap overflow in Henry Spencer's
-      regex library. CVE-2015-2305 (Closes: #778406).
-    - Fix crash in upx decoder with crafted file. Discovered and patch
-      supplied by Sebastian Andrzej Siewior. CVE-2015-2170.
-    - Fix segfault scanning certain HTML files. Reported with sample by
-      Kai Risku.
-    - Improve detections within xar/pkg files.
-  * update GPG key used to verify releases to get uscan/get_orig.sh working
-    again.
-  * update symbol version for cl_retflevel due to CL_FLEVEL change.
+ -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 05 May 2015 14:14:58 -0400
 
- -- Scott Kitterman <scott@kitterman.com>  Fri, 01 May 2015 22:45:55 -0400
+clamav (0.98.6+dfsg-1ubuntu4) vivid; urgency=medium
 
-clamav (0.98.6+dfsg-3) unstable; urgency=medium
+  * No change upload to work around temporary archive ddeb issue
 
-  * Fix syntax errors in clamav-freshclam.postinst. Thanks piuparts!
-  * Fix cleanup on purge in clamav-base.postrm.
+ -- Scott Kitterman <scott@kitterman.com>  Fri, 24 Apr 2015 22:19:57 -0400
 
- -- Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>  Sat, 25 Apr 2015 13:39:33 +0200
+clamav (0.98.6+dfsg-1ubuntu3) vivid; urgency=medium
 
-clamav (0.98.6+dfsg-2) unstable; urgency=medium
+  * d/clamav-daemon.postinst.in: Fix typo which causes a crash while installing
+    this package over any previous version (upgrading). Variable $DEBCONFILE
+    has been used incorrectly inside the script instead of $DEBCONFFILE. This
+    issue doesn't show up during regular installation (not upgrade) because
+    the typo is on the path which gets executed only if debconf information is
+    available for the package (LP: #1438745, #1447809, Closes: #778507). 
 
-  [ Andreas Cadhalpun ]
-  * Fix variable name mismatch in clamav-milter.postinst in order to
-    make preseeding work correctly. (Closes: #778445)
-  * Fix clamav-daemon installability with custom PidFile.
-    Thanks to Andy Dorman for the bug report and patch. (Closes: #778507)
-  * Rename DEBCONFILE to DEBCONFFILE in clamav-freshclam.postinst making it
-    consistent with the other postinst scripts.
-  * Build against libsystemd-dev. (Closes: #779758)
-  * Drop 'XS-Testsuite: autopkgtest' from debian/control.
-    Debhelper automatically adds the Testsuite field.
-    This fixes the lintian warning xs-testsuite-header-in-debian-control.
-  * Shorten debian/copyright. This fixes some lintian warnings:
-     - dep5-copyright-license-name-not-unique
-     - wildcard-matches-nothing-in-dep5-copyright
-     - unused-file-paragraph-in-dep5-copyright
-  * Use pathfind to avoid hardcoding paths.
-    This fixes command-with-path-in-maintainer-script lintian warnings.
+ -- Oleg Strikov <oleg.strikov@canonical.com>  Fri, 24 Apr 2015 15:05:18 +0000
 
-  [ Sebastian Andrzej Siewior ]
-  * Replace ” with " in debian/common_functions (Closes: #781088)
-  * Drop __DATE__ from tfm to make the package build reproducible with
-    -Werror=date-time. With this change faketime is no longer required.
+clamav (0.98.6+dfsg-1ubuntu2) vivid; urgency=medium
 
- -- Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>  Fri, 24 Apr 2015 18:38:50 +0200
+  * Don't use llvm on armhf, arm64 and ppc64el.
+    - armhf: Should work, but upstream claims it's not tested and
+      refuses to build. Why do we have testsuites?
+    - arm64: No JIT available in 3.5.
+    - ppc64el: Builds, but fails one test.
+
+ -- Matthias Klose <doko@ubuntu.com>  Thu, 05 Mar 2015 17:00:42 +0100
+
+clamav (0.98.6+dfsg-1ubuntu1) vivid; urgency=medium
+
+  * Explicitly build using llvm-3.5, on all architectures.
+
+ -- Matthias Klose <doko@ubuntu.com>  Wed, 04 Mar 2015 20:45:34 +0100
 
 clamav (0.98.6+dfsg-1) unstable; urgency=high
 

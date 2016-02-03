@@ -62,7 +62,7 @@ libclamav.so.6 libclamav6 #MINVER#
  cl_load_cert@CLAMAV_PRIVATE 0.98.3
  cl_load_crl@CLAMAV_PRIVATE 0.98.3
  cl_retdbdir@CLAMAV_PUBLIC 0.98.1
- cl_retflevel@CLAMAV_PUBLIC 0.98.7
+ cl_retflevel@CLAMAV_PUBLIC 0.98.5~rc1
  cl_retver@CLAMAV_PUBLIC 0.98.1
  cl_scandesc@CLAMAV_PUBLIC 0.98.1
  cl_scandesc_callback@CLAMAV_PUBLIC 0.98.1

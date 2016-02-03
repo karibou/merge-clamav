@@ -1,4 +1,4 @@
-From ac20ba02f44e7ee63e85c665b9360e678635dcf1 Mon Sep 17 00:00:00 2001
+From 0f40fb57852416f08e51b2b9a8abdaacf5376cb9 Mon Sep 17 00:00:00 2001
 From: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
 Date: Mon, 11 Aug 2014 23:22:05 +0200
 Subject: Add upstream systemd support for clamav-daemon and clamav-freshclam.
@@ -7,7 +7,7 @@ Subject: Add upstream systemd support for clamav-daemon and clamav-freshclam.
  Makefile.am                           |   2 +-
  clamd/Makefile.am                     |   4 ++
  clamd/clamav-daemon.service.in        |  17 ++++++
- clamd/clamav-daemon.socket            |  13 +++++
+ clamd/clamav-daemon.socket            |  12 ++++
  clamd/clamd.c                         | 102 +++++++++++++++++++++++++++-------
  clamd/localserver.c                   |  34 ++++++++++++
  clamd/server-th.c                     |  55 +++++++++++-------
@@ -16,10 +16,10 @@ Subject: Add upstream systemd support for clamav-daemon and clamav-freshclam.
  freshclam/Makefile.am                 |   4 ++
  freshclam/clamav-freshclam.service.in |  12 ++++
  freshclam/freshclam.c                 |  39 +++++++++++--
- m4/reorganization/libs/systemd.m4     |  19 +++++++
+ m4/reorganization/libs/systemd.m4     |  18 ++++++
  shared/misc.h                         |   8 +++
  shared/optparser.c                    |   2 +-
- 15 files changed, 320 insertions(+), 44 deletions(-)
+ 15 files changed, 318 insertions(+), 44 deletions(-)
  create mode 100644 clamd/clamav-daemon.service.in
  create mode 100644 clamd/clamav-daemon.socket
  create mode 100644 freshclam/clamav-freshclam.service.in
@@ -78,10 +78,10 @@ index 0000000..0a5d456
 +Also=clamav-daemon.socket
 diff --git a/clamd/clamav-daemon.socket b/clamd/clamav-daemon.socket
 new file mode 100644
-index 0000000..df13880
+index 0000000..43a34cd
 --- /dev/null
 +++ b/clamd/clamav-daemon.socket
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,12 @@
 +[Unit]
 +Description=Socket for Clam AntiVirus userspace daemon
 +Documentation=man:clamd(8) man:clamd.conf(5) http://www.clamav.net/lang/en/doc/
@@ -89,9 +89,8 @@ index 0000000..df13880
 +[Socket]
 +ListenStream=/run/clamav/clamd.ctl
 +#ListenStream=127.0.0.1:1024
-+SocketUser=clamav
-+SocketGroup=clamav
-+RemoveOnStop=True
++ExecStartPost=/bin/chown -R clamav:clamav /run/clamav/
++ExecStopPost=/bin/rm /run/clamav/clamd.ctl
 +
 +[Install]
 +WantedBy=sockets.target
@@ -464,7 +463,7 @@ index 9b714c7..e9794bf 100644
  
      memset(&hints, 0x00, sizeof(struct addrinfo));
 diff --git a/configure.ac b/configure.ac
-index 7364573..be7e69f 100644
+index 92a98ec..e3ba55b 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -86,6 +86,7 @@ AM_MAINTAINER_MODE
@@ -600,13 +599,12 @@ index 124cd40..d46ef1a 100644
  #endif
 diff --git a/m4/reorganization/libs/systemd.m4 b/m4/reorganization/libs/systemd.m4
 new file mode 100644
-index 0000000..4c2635b
+index 0000000..cac5d42
 --- /dev/null
 +++ b/m4/reorganization/libs/systemd.m4
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,18 @@
 +dnl Check for systemd-daemon
-+PKG_CHECK_MODULES(SYSTEMD, [libsystemd], [AC_DEFINE([HAVE_SYSTEMD],,[systemd is supported])],
-+                  [PKG_CHECK_MODULES(SYSTEMD, [libsystemd-daemon], [AC_DEFINE([HAVE_SYSTEMD],,[systemd-daemon is supported])], [AC_MSG_RESULT([systemd is not supported])])])
++PKG_CHECK_MODULES(SYSTEMD, [libsystemd-daemon], [AC_DEFINE([HAVE_SYSTEMD],,[systemd-daemon is supported])], [AC_MSG_RESULT([systemd-daemon is not supported])])
 +CLAMD_LIBS="$CLAMD_LIBS $SYSTEMD_LIBS"
 +CFLAGS="$CFLAGS $SYSTEMD_CFLAGS"
 +

@@ -1,0 +1,27 @@
+From a9a4b31118ed59689fea9c7cf7fdb3b564849f7e Mon Sep 17 00:00:00 2001
+From: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
+Date: Mon, 22 Sep 2014 21:50:05 +0200
+Subject: fix autoreconf with embedded libmspack
+
+---
+ libclamav/libmspack-0.4alpha/NEWS         | 1 +
+ libclamav/libmspack-0.4alpha/configure.ac | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/libclamav/libmspack-0.4alpha/NEWS b/libclamav/libmspack-0.4alpha/NEWS
+index e69de29..8d1c8b6 100644
+--- a/libclamav/libmspack-0.4alpha/NEWS
++++ b/libclamav/libmspack-0.4alpha/NEWS
+@@ -0,0 +1 @@
++ 
+diff --git a/libclamav/libmspack-0.4alpha/configure.ac b/libclamav/libmspack-0.4alpha/configure.ac
+index 55fb6ce..1fc9857 100644
+--- a/libclamav/libmspack-0.4alpha/configure.ac
++++ b/libclamav/libmspack-0.4alpha/configure.ac
+@@ -46,5 +46,5 @@ AC_SYS_LARGEFILE
+ AC_FUNC_FSEEKO
+ 
+ # Checks for library functions.
+-AC_CONFIG_FILES([Makefile doc/Makefile doc/Doxyfile libmspack.pc])
++AC_CONFIG_FILES([Makefile libmspack.pc])
+ AC_OUTPUT

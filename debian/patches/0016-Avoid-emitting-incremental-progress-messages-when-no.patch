@@ -1,4 +1,4 @@
-From 4973a2cfd3c677b270cdaa059751356203bc6d8c Mon Sep 17 00:00:00 2001
+From e463b0d405215beadf101e94c25eea8402447c71 Mon Sep 17 00:00:00 2001
 From: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
 Date: Sat, 22 Nov 2014 15:26:02 +0100
 Subject: Avoid emitting incremental progress messages when not outputting to a
