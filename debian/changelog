@@ -1,77 +1,197 @@
-clamav (0.98.7+dfsg-0ubuntu5) xenial; urgency=high
+clamav (0.99+dfsg-1) unstable; urgency=medium
 
-  * Use new libsystemd-dev package name.
+  * Import final release of 0.99
+  * suggest libclamunrar7 instead of libclamunrar6
 
- -- Dimitri John Ledkov <xnox@ubuntu.com>  Mon, 07 Dec 2015 11:09:19 +0000
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Sat, 05 Dec 2015 00:06:53 +0100
 
-clamav (0.98.7+dfsg-0ubuntu4) wily; urgency=medium
+clamav (0.99~rc2+dfsg-2) experimental; urgency=medium
 
-  * Ignore test results on armhf.
+  * Drop LLVM usage on powerpc (it is broken since the v3.6 switch).
 
- -- Matthias Klose <doko@ubuntu.com>  Mon, 10 Aug 2015 08:37:47 +0000
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Tue, 01 Dec 2015 20:55:56 +0100
 
-clamav (0.98.7+dfsg-0ubuntu3) wily; urgency=medium
+clamav (0.99~rc2+dfsg-1) experimental; urgency=medium
 
-  * No-change rebuild for libstdc++ ABI changes
+  [ Andreas Cadhalpun ]
+  * Import first upstream release candidate for 0.99.
+  * Drop patches included upstream:
+     - Avoid-emitting-incremental-progress-messages.patch
+     - bb-10731-Allow-to-specificy-a-group-for-the-socket.patch
+     - clamav-milter-add-additinal-SMFIF_-flags.patch
+     - remove-unnecessary-harmful-flags-from-libclamav.pc.patch
+     - hardcode-LLVM-linker-flag.patch
+  * Disable Large File Support because it is incompatible with fts.h, which
+    is required by the new upstream release.
+  * Drop patches needing LFS:
+     - libclamav-use-libmspack.patch
+     - fix-ssize_t-size_t-off_t-printf-modifier.patch
+  * Disable valgrind in the test suite again. It is too flaky.
+  * Print all new options in one build attempt.
+  * Preserve new OnAccessMountPath, OnAccessDisableDDD and OnAccessPrevention
+    options in clamd.conf.
+  * Rename libclamav6 to libclamav7 and update symbols file.
+  * Add -Wl,--as-needed to LDFLAGS to avoid useless dependencies.
+  * Remove unused lintian overrides.
+  * Update debian/copyright.
 
- -- Matthias Klose <doko@ubuntu.com>  Sun, 09 Aug 2015 13:45:39 +0000
+  [ Sebastian Andrzej Siewior ]
+  * add a LFS safe fts() implementation from glibc
+  * bring back libmspack related patches (libclamav-use-libmspack.patch +
+    fix-ssize_t-size_t-off_t-printf-modifier.patch) and -D_FILE_OFFSET_BITS=64
+  * fix a crash in clamdscan if file is passed via fd
+  * Import second upstream release candidate for 0.99.
 
-clamav (0.98.7+dfsg-0ubuntu2) wily; urgency=medium
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Sat, 21 Nov 2015 21:41:24 +0100
 
-  * No-change rebuild for libstdc++ ABI changes
+clamav (0.99~beta1+dfsg-1) experimental; urgency=medium
 
- -- Matthias Klose <doko@ubuntu.com>  Sun, 09 Aug 2015 13:42:57 +0000
+  *  use T=<timeout> so we can drop
+     unit_tests-increment-test-timeout-from-40secs-to-5mi from the patch queue.
+  * import new beta from upstream
+  * depend on libpcre3-dev, required for YARA support
+  * add new PCRE related options postist script for clamd
+  * record new symbols in libclamav6.symbols
+  * enable valgrind in the test suite and see how well it works across all
+    architecures.
+  * Update debian/copyright.
 
-clamav (0.98.7+dfsg-0ubuntu1) wily; urgency=medium
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Wed, 22 Jul 2015 21:52:48 +0200
 
-  * Updated to 0.98.7 to fix multiple issues
-    - CVE-2015-2170
-    - CVE-2015-2221
-    - CVE-2015-2222
-    - CVE-2015-2305
-    - CVE-2015-2668
-  * Refreshed patches for 0.98.7:
-    - d/p/0005-libclamav-use-libmspack.patch
-    - d/p/0007-fix-ssize_t-size_t-off_t-printf-modifier.patch
-    - d/p/0008-hardcode-LLVM-linker-flag-because-llvm-config-return.patch
-    - d/p/0015-llvm-don-t-use-system-libs.patch
-  * Removed upstreamed patches:
-    - d/p/0012-remove-AC_CONFIG_SRCDIR-llvm-configure-from-libclama.patch
+clamav (0.98.7+dfsg-5) unstable; urgency=medium
 
- -- Marc Deslauriers <marc.deslauriers@ubuntu.com>  Tue, 05 May 2015 14:14:58 -0400
+  [ Andreas Cadhalpun ]
+  * Drop patch numbers, because they cause too much diff noise.
+  * Fix use-pkg-config-to-determine-CHECK_LIBS.patch so that the tests
+    actually get run again.
 
-clamav (0.98.6+dfsg-1ubuntu4) vivid; urgency=medium
+  [ Sebastian Andrzej Siewior ]
+  * Drop LLVM usage on powerpc (it is broken since the v3.6 switch).
 
-  * No change upload to work around temporary archive ddeb issue
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Tue, 01 Dec 2015 20:58:20 +0100
 
- -- Scott Kitterman <scott@kitterman.com>  Fri, 24 Apr 2015 22:19:57 -0400
+clamav (0.98.7+dfsg-4) unstable; urgency=medium
 
-clamav (0.98.6+dfsg-1ubuntu3) vivid; urgency=medium
+  * Add patch to support LLVM 3.6.
+  * debian/clamav-milter.postinst.in: Update to reflect the change from
+    examples/clamav-milter.conf to examples/clamav-milter.conf.sample.
+    Thanks to Christian Schrötter. (Closes: #795190)
+  * Use 'grep -a' instead of grep in maintainer scripts. (Closes: #799808)
+  * Restore the SE Linux context when creating /var/lib/ucf/cache.
+    Thanks to Russell Coker for the patch. (Closes: #802311)
+  * Adapt debian/watch to new download location www.clamav.net/download.html.
+  * Add patch to use pkg-config to determine CHECK_LIBS.
+    The linker flags for check changed making the hardcoded flags useless.
 
-  * d/clamav-daemon.postinst.in: Fix typo which causes a crash while installing
-    this package over any previous version (upgrading). Variable $DEBCONFILE
-    has been used incorrectly inside the script instead of $DEBCONFFILE. This
-    issue doesn't show up during regular installation (not upgrade) because
-    the typo is on the path which gets executed only if debconf information is
-    available for the package (LP: #1438745, #1447809, Closes: #778507). 
+ -- Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>  Sun, 25 Oct 2015 19:35:51 +0100
 
- -- Oleg Strikov <oleg.strikov@canonical.com>  Fri, 24 Apr 2015 15:05:18 +0000
+clamav (0.98.7+dfsg-3) unstable; urgency=medium
 
-clamav (0.98.6+dfsg-1ubuntu2) vivid; urgency=medium
+  [ Sebastian Andrzej Siewior ]
+  * use T=<timeout> so we can drop
+    unit_tests-increment-test-timeout-from-40secs-to-5mi from the patch queue.
+  * add 0013-tfm-fix-compile-errors.patch and
+    0014-tfm-duct-tape-misscompile-on-armhf.patch to get it built on armhf
+    with gcc-5.
 
-  * Don't use llvm on armhf, arm64 and ppc64el.
-    - armhf: Should work, but upstream claims it's not tested and
-      refuses to build. Why do we have testsuites?
-    - arm64: No JIT available in 3.5.
-    - ppc64el: Builds, but fails one test.
+  [ Andreas Cadhalpun ]
+  * Prevent the logrotate scripts from aborting if reloading/restarting fails.
+    Thanks to John Zaitseff. (Closes: #788652)
 
- -- Matthias Klose <doko@ubuntu.com>  Thu, 05 Mar 2015 17:00:42 +0100
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Fri, 14 Aug 2015 08:55:16 +0200
 
-clamav (0.98.6+dfsg-1ubuntu1) vivid; urgency=medium
+clamav (0.98.7+dfsg-2) unstable; urgency=medium
 
-  * Explicitly build using llvm-3.5, on all architectures.
+  [ Andreas Cadhalpun ]
+  * Increase MaxRecursion to the upstream default of 16. (Closes: #787249)
+  * Bump the version for the PidFile removal check in the clamav-daemon and
+    clamav-freshclam postinst scripts (Closes: #767353)
+  * Add database existence check also to clamav-daemon.socket.
+    This works around systemd bug #775458. (Closes: #775112)
 
- -- Matthias Klose <doko@ubuntu.com>  Wed, 04 Mar 2015 20:45:34 +0100
+  [ Sebastian Andrzej Siewior ]
+  * also remove debian/clamav-freshclam.prerm clean
+
+ -- Sebastian Andrzej Siewior <sebastian@breakpoint.cc>  Sat, 13 Jun 2015 15:11:41 +0200
+
+clamav (0.98.7+dfsg-1) unstable; urgency=high
+
+  [ Andreas Cadhalpun ]
+  * Use SocketUser, SocketGroup and RemoveOnStop systemd socket options
+    instead of using ExecStartPost and ExecStopPost for that.
+  * Respect clamav-daemon's LocalSocket* options with the systemd unit by
+    extending the clamav-daemon.socket file appropriately, when running
+    dpkg-reconfigure clamav-daemon. (Closes: #783720)
+  * Disable this extendend configuration, when handling the configuration
+    file with debconf is disabled.
+  * Disable clamav-daemon.socket in prerm script.
+
+  [ Sebastian Andrzej Siewior ]
+  * Import new upstream:
+    - Improvements to PDF processing: decryption, escape sequence
+      handling, and file property collection.
+    - Scanning/analysis of additional Microsoft Office 2003 XML format.
+    - Fix infinite loop condition on crafted y0da cryptor file. Identified
+      and patch suggested by Sebastian Andrzej Siewior. CVE-2015-2221.
+    - Fix crash on crafted petite packed file. Reported and patch
+      supplied by Sebastian Andrzej Siewior. CVE-2015-2222.
+    - Fix false negatives on files within iso9660 containers. This issue
+      was reported by Minzhuan Gong.
+    - Fix a couple crashes on crafted upack packed file. Identified and
+      patches supplied by Sebastian Andrzej Siewior.
+    - Fix a crash during algorithmic detection on crafted PE file.
+      Identified and patch supplied by Sebastian Andrzej Siewior.
+    - Fix an infinite loop condition on a crafted "xz" archive file.
+      This was reported by Dimitri Kirchner and Goulven Guiheux.
+      CVE-2015-2668.
+    - Fix compilation error after ./configure --disable-pthreads.
+      Reported and fix suggested by John E. Krokes.
+    - Apply upstream patch for possible heap overflow in Henry Spencer's
+      regex library. CVE-2015-2305 (Closes: #778406).
+    - Fix crash in upx decoder with crafted file. Discovered and patch
+      supplied by Sebastian Andrzej Siewior. CVE-2015-2170.
+    - Fix segfault scanning certain HTML files. Reported with sample by
+      Kai Risku.
+    - Improve detections within xar/pkg files.
+  * update GPG key used to verify releases to get uscan/get_orig.sh working
+    again.
+  * update symbol version for cl_retflevel due to CL_FLEVEL change.
+
+ -- Scott Kitterman <scott@kitterman.com>  Fri, 01 May 2015 22:45:55 -0400
+
+clamav (0.98.6+dfsg-3) unstable; urgency=medium
+
+  * Fix syntax errors in clamav-freshclam.postinst. Thanks piuparts!
+  * Fix cleanup on purge in clamav-base.postrm.
+
+ -- Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>  Sat, 25 Apr 2015 13:39:33 +0200
+
+clamav (0.98.6+dfsg-2) unstable; urgency=medium
+
+  [ Andreas Cadhalpun ]
+  * Fix variable name mismatch in clamav-milter.postinst in order to
+    make preseeding work correctly. (Closes: #778445)
+  * Fix clamav-daemon installability with custom PidFile.
+    Thanks to Andy Dorman for the bug report and patch. (Closes: #778507)
+  * Rename DEBCONFILE to DEBCONFFILE in clamav-freshclam.postinst making it
+    consistent with the other postinst scripts.
+  * Build against libsystemd-dev. (Closes: #779758)
+  * Drop 'XS-Testsuite: autopkgtest' from debian/control.
+    Debhelper automatically adds the Testsuite field.
+    This fixes the lintian warning xs-testsuite-header-in-debian-control.
+  * Shorten debian/copyright. This fixes some lintian warnings:
+     - dep5-copyright-license-name-not-unique
+     - wildcard-matches-nothing-in-dep5-copyright
+     - unused-file-paragraph-in-dep5-copyright
+  * Use pathfind to avoid hardcoding paths.
+    This fixes command-with-path-in-maintainer-script lintian warnings.
+
+  [ Sebastian Andrzej Siewior ]
+  * Replace ” with " in debian/common_functions (Closes: #781088)
+  * Drop __DATE__ from tfm to make the package build reproducible with
+    -Werror=date-time. With this change faketime is no longer required.
+
+ -- Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>  Fri, 24 Apr 2015 18:38:50 +0200
 
 clamav (0.98.6+dfsg-1) unstable; urgency=high
 
