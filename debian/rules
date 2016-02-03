@@ -160,7 +160,7 @@ override_dh_auto_build-arch: clamav_build-arch
 endif
 
 override_dh_auto_test:
-ifneq (,$(filter alpha, $(DEB_HOST_ARCH)))
+ifneq (,$(filter alpha armhf, $(DEB_HOST_ARCH)))
 	@echo "Ignoring errors because of #521737"
 	-dh_auto_test -- V=1
 else
