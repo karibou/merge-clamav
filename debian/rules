@@ -146,7 +146,6 @@ clamav_build-arch:
 	perl -pe 's~#COMMON-FUNCTIONS#~qx{cat debian/common_functions}~eg' < debian/clamav-freshclam.init.in > debian/clamav-freshclam.init
 	perl -pe 's~#COMMON-FUNCTIONS#~qx{cat debian/common_functions}~eg' < debian/clamav-freshclam.config.in > debian/clamav-freshclam.config
 	perl -pe 's~#COMMON-FUNCTIONS#~qx{cat debian/common_functions}~eg' < debian/clamav-freshclam.postinst.in > debian/clamav-freshclam.postinst
-	perl -pe 's~#COMMON-FUNCTIONS#~qx{cat debian/common_functions}~eg' < debian/clamav-freshclam.prerm.in > debian/clamav-freshclam.prerm
 
 # override_dh_auto_build-{indep,arch} doesn't work in squeeze (Debian 6).
 ifeq ($(shell cut -c1 /etc/debian_version),6)
