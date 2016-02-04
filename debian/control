@@ -37,6 +37,7 @@ Standards-Version: 3.9.6
 Vcs-Git: git://anonscm.debian.org/pkg-clamav/clamav.git
 Vcs-Browser: https://anonscm.debian.org/cgit/pkg-clamav/clamav.git
 Homepage: http://www.clamav.net/
+XS-Testsuite: autopkgtest
 
 Package: clamav-base
 Architecture: all
