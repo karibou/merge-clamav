@@ -20,6 +20,21 @@ CXXFLAGS := $(shell dpkg-buildflags --get CXXFLAGS) -Wall -D_FILE_OFFSET_BITS=64
 CPPFLAGS := $(shell dpkg-buildflags --get CPPFLAGS)
 LDFLAGS  := $(shell dpkg-buildflags --get LDFLAGS) -Wl,--as-needed
 
+# Faketime on hurd currently (faketime 0.9.1-2) segfaults and newer versions FTBFS.
+# Thus don't use it there.
+# TODO: Use faketime on hurd again, once this is fixed.
+ifneq (,$(findstring $(DEB_HOST_ARCH),hurd-i386))
+  FT=
+else
+  # Get the date of the latest changelog entry.
+  # This is used to make the build more binary reproducible.
+  DAT  = $(shell dpkg-parsechangelog | grep Date: | sed s/Date:\ //)
+  # Change the format to the only one that stops faketime from incresing the time.
+  DATE = $(shell faketime "$(DAT)" date -u +"%Y-%m-%d %H:%M:%S")
+  # NO_FAKE_STAT is necessary in order not to confuse make.
+  FT=NO_FAKE_STAT="true" faketime -f -m "$(DATE)"
+endif
+
 # LLVM is only used on these archs, so no point in enabling it elsewhere
 # To add new llvm/jit archs add it here and to the arch list for llvm-dev in
 # debian/control.
@@ -108,7 +123,7 @@ override_dh_auto_configure:
 	done; \
 	[ ! -f debian/exit ] || (rm debian/exit && exit 1)
 	# Configure using the specified flags.
-	dh_auto_configure -- $(CONFIG) $(DEBUG_OPTS)
+	$(FT) dh_auto_configure -- $(CONFIG) $(DEBUG_OPTS)
 
 override_dh_auto_clean:
 	# Update .po files for debconf.
@@ -136,15 +151,15 @@ clamav_build-arch:
 ifeq ($(shell cut -c1 /etc/debian_version),6)
 override_dh_auto_build: clamav_build-indep clamav_build-arch
 	# Build all files.
-	dh_auto_build -- V=1
+	$(FT) dh_auto_build -- V=1
 else
 override_dh_auto_build-indep: clamav_build-indep
 	# Build architecture-independent files.
-	dh_auto_build -i -- V=1
+	$(FT) dh_auto_build -i -- V=1
 
 override_dh_auto_build-arch: clamav_build-arch
 	# Build architecture-dependent files.
-	dh_auto_build -a -- V=1
+	$(FT) dh_auto_build -a -- V=1
 endif
 
 override_dh_auto_test:
