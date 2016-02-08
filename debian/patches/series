@@ -9,3 +9,4 @@ add-LLVM-3.6-support.patch
 clamav_add_private_fts_implementation.patch
 fix-ssize_t-size_t-off_t-printf-modifier.patch
 libclamav-use-libmspack.patch
+llvm-don-t-use-system-libs.patch
