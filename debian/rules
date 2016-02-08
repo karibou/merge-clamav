@@ -48,6 +48,7 @@ else
     SYSTEM_LLVM =
   else
     SYSTEM_LLVM = -with-system-llvm=/usr/bin/llvm-config --with-llvm-linking=dynamic
+    SYSTEM_LLVM = -with-system-llvm=/usr/lib/llvm-3.5/bin/llvm-config --with-llvm-linking=dynamic
   endif
 endif
 
